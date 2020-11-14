@@ -16,6 +16,9 @@ def detect_change(filepath):
     change = ifModified(filepath)
     return change
 
+def stopMonitoringCallback():
+    print("Stopping Monitoring of 'UserFiles/components.txt'")
+
 def MonitorComponentsChanges():
     '''Contineuously Monitor `components.txt` file for changes and take appropriate actions'''
 
@@ -43,7 +46,9 @@ def MonitorComponentsChanges():
                     # Creates file again, if new_length < original file_size
                     print('`components.txt` contents found wrong. Creating the file again.')
                     fileMaker()
-            
+        changed.add_done_callback(MonitorComponentsChanges)
+        changed.cancel()
+        
             
         
     

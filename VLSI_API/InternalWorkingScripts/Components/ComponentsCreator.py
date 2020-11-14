@@ -36,6 +36,6 @@ def createComponents_txt():
     components_mssg_find()
     # Creates `components.txt`
     fileMaker()
-
+    print("'UserFiles/components.txt' created. Open it for furthur instructions.")
 
     

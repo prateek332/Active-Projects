@@ -1,9 +1,8 @@
-# This script needs to run continuosly in seprate process
-
 import re
 from pathlib import Path
 from Checkers import pathCheck
 from InternalWorkingScripts.Components.ComponentsCreator import comp_path
+from InternalWorkingScripts.PopUpMessage import popUp
 
 
 # Making a list of logic gates
@@ -16,47 +15,56 @@ def logicGatesList():
             logic_gates = lg.read().split()  # List of logic gates
     else:
         print("'DataFiles/DigitalComponents/logic_gates.txt' does not exists. Please reinstall the program.")
-        exit()
+        #exit()
     
     return  logic_gates
 
 # Stores the parsed-components data
 parsed_components_list = []
 
-'''
 def infoChecker(gate, inputs = '1', quantity = '1'):
+    '''Checks for invalid gates input from the user. Return `True` if all components are correct'''
+
+    logic_gates = logicGatesList()
     if gate not in logic_gates:
+        popUp.popUp('Gate Name Error', f'{gate} - Does not exists')
         print("Gate name: ", gate, " does not exits.")
-        exit()
+        return False
+        #exit()
 
     if gate == 'not':
         if inputs != '1':
+            popUp.popUp('Gate Input Info Error', 'Not gate inputs are invalid')
             print("NOT gate inputs quantity are invalid.")
-            exit()
+            return False
+            #exit()
         if quantity < '1':
+            popUp.popUp('Gate Quantity Info Error', 'Not gate quantity are invalid')
             print("NOT gate quantity are invalid.")
-
+            return False
+            #exit()
+            
     else:
         if inputs < '1':
+            popUp.popUp('Gate Input Info Error', f'{gate}-inputs are invalid')
             print("Wrong number of inputs for Gate:",gate)
-            exit()
+            return False
+            #exit()
         if quantity < '1':
+            popUp.popUp('Gate Quantity Info Error', f'{gate}-quantity are invalid')
             print("Invalid quantity for Gate:",gate)
-            exit()
-    
-    # Just to check if program works correctly.
-    # Remove this in final product.
-    print("Info is correct")
-'''
+            return False
+            #exit()
+    return True
+
 
 def _componentsParser(gate_info):
     global parsed_components_list
-    parsed_components_list.clear()
 
     gate_info = gate_info.strip()
 
     gate_name = re.compile(r'\w{2,4}')
-    gate_inputs_quantity = re.compile(r'\d+(\s\d+)?')
+    gate_inputs_quantity = re.compile(r'(-)?\d+(\s(-)?\d+)?')
 
     # Getting info
     gate = gate_name.search(gate_info).group()
@@ -65,11 +73,14 @@ def _componentsParser(gate_info):
     # _x[0] = no_of_inputs, _x[1] = quantity, for all other gates
 
     if gate != "not":
+        return_check = infoChecker(gate, inputs = _x[0], quantity = _x[1])
         parsed_components_list.append([gate,_x[0],_x[1]])
         #NLG.netListCreator(gate,_x[0],_x[1])
     else:
+        return_check = infoChecker(gate, quantity = _x[0])
         parsed_components_list.append([gate,1,_x[0]])
         #NLG.netListCreator(gate,quantity=_x[0])
+    return return_check
 
 def writeParsedComponents():
     filepath = Path(str(Path('.').absolute()) + '/DataFiles/ParsedComponents/parsed_components.txt')
@@ -85,13 +96,21 @@ def writeParsedComponents():
 
 
 def parseComponents():
-    filepath = comp_path
+    '''Reads `components.txt` and parse it to create a components list, for NetListGenerator script. Returns `None`'''
+    global parsed_components_list
+    parsed_components_list.clear()
+    filepath = comp_path # Path to components.txt
+
+    comp_validity_check = True
+
     with open(filepath) as cp:
         for line in cp:
             if line == '\n' or line[0] == '#':
                 continue
-            _componentsParser(line)
-    writeParsedComponents()
-    print(parsed_components_list)
+            if comp_validity_check is True:
+                comp_validity_check = _componentsParser(line)
+    if comp_validity_check:
+        writeParsedComponents()
+        print("Components parsed")
 
 
