@@ -1,11 +1,29 @@
+# This script needs to run continuosly in seprate process
+
 import re
 from pathlib import Path
-from ..NetList import NetListGenerator as NLG
+from Checkers import pathCheck
+from InternalWorkingScripts.Components.ComponentsCreator import comp_path
 
-# All possible logic_gates
-logic_gates = ['and','or','not','nand','nor','xor','xnor']
-netlist_data = []
 
+# Making a list of logic gates
+def logicGatesList():
+    logic_gates_path = Path(str(Path('.').absolute()) + '/DataFiles/DigitalComponents/logic_gates.txt')
+
+    logic_gates = None
+    if pathCheck.checkPath(logic_gates_path):
+        with open(logic_gates_path) as lg:
+            logic_gates = lg.read().split()  # List of logic gates
+    else:
+        print("'DataFiles/DigitalComponents/logic_gates.txt' does not exists. Please reinstall the program.")
+        exit()
+    
+    return  logic_gates
+
+# Stores the parsed-components data
+parsed_components_list = []
+
+'''
 def infoChecker(gate, inputs = '1', quantity = '1'):
     if gate not in logic_gates:
         print("Gate name: ", gate, " does not exits.")
@@ -29,8 +47,12 @@ def infoChecker(gate, inputs = '1', quantity = '1'):
     # Just to check if program works correctly.
     # Remove this in final product.
     print("Info is correct")
+'''
 
 def _componentsParser(gate_info):
+    global parsed_components_list
+    parsed_components_list.clear()
+
     gate_info = gate_info.strip()
 
     gate_name = re.compile(r'\w{2,4}')
@@ -43,17 +65,33 @@ def _componentsParser(gate_info):
     # _x[0] = no_of_inputs, _x[1] = quantity, for all other gates
 
     if gate != "not":
-        netlist_data.append([gate,_x[0],_x[1]])
+        parsed_components_list.append([gate,_x[0],_x[1]])
         #NLG.netListCreator(gate,_x[0],_x[1])
     else:
-        netlist_data.append([gate,1,_x[0]])
+        parsed_components_list.append([gate,1,_x[0]])
         #NLG.netListCreator(gate,quantity=_x[0])
 
+def writeParsedComponents():
+    filepath = Path(str(Path('.').absolute()) + '/DataFiles/ParsedComponents/parsed_components.txt')
 
-def parseComponents(file_path):
-    with open(file_path) as cp:
+    if pathCheck.checkPath(filepath):
+        pass
+    else:
+        pathCheck.checkPath(filepath,True)
+    
+    global parsed_components_list
+    with open(filepath, 'w') as wpc:
+        wpc.write(str(parsed_components_list))
+
+
+def parseComponents():
+    filepath = comp_path
+    with open(filepath) as cp:
         for line in cp:
             if line == '\n' or line[0] == '#':
                 continue
             _componentsParser(line)
-    NLG.netListCreator(netlist_data)
+    writeParsedComponents()
+    print(parsed_components_list)
+
+

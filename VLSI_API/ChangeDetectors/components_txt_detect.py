@@ -2,6 +2,7 @@ from Checkers.modify_check import ifModified
 from concurrent.futures import ProcessPoolExecutor as pool
 from InternalWorkingScripts.Components.ComponentsCreator import fileMaker
 from InternalWorkingScripts.Components.ComponentsCreator import comp_path
+from InternalWorkingScripts.Components.ComponentsParser import parseComponents
 
 # Path to components.txt
 filepath = comp_path
@@ -15,7 +16,7 @@ def detect_change(filepath):
     change = ifModified(filepath)
     return change
 
-def ifCompChanged():
+def MonitorComponentsChanges():
     '''Contineuously Monitor `components.txt` file for changes and take appropriate actions'''
 
     global filepath
@@ -32,8 +33,8 @@ def ifCompChanged():
                 new_length = content_length(filepath)
 
                 if file_size < new_length: # Gates info added
-                    print('`components.txt` modified')
-                    # Add code to generate Netlist
+                    print('`components.txt` modified, parsing components')
+                    parseComponents()
     
                 elif file_size == new_length: # No changes in the file contents
                     continue

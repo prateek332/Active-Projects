@@ -6,3 +6,4 @@
 #Please provide 1 space between all 3 quantities.
 #For "NOT" gate write:- `not 4`, which means 4 not gates.
 #Write your gate info from next line.
+and 4 5
