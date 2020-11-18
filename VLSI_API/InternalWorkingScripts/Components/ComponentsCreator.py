@@ -1,34 +1,35 @@
 import os, time
+from shutil import Error
 from pathlib import Path
 from Checkers.pathCheck import checkPath
 from concurrent.futures import ThreadPoolExecutor as pool
+from InternalWorkingScripts.file_paths import filePath
 
 
 # Components.txt file path for creation, for user interactions
-comp_path = Path(str(Path('.').absolute()) + '/UserFiles/components.txt')
+comp_path = filePath().components_txt_path()
 
 sample_data_mssg = "" # Will save sample_data text
 
 def components_mssg_find():
     global sample_data_mssg
-    comp_mssg_path = Path(str(Path('.').absolute()) + '/DataFiles/comp_mssg.txt')
-    print(comp_mssg_path)
-    if Path.exists(comp_mssg_path):
+    comp_mssg_path = filePath().default_components_mssg_path()
+    
+    try:
         with open(comp_mssg_path,'r') as cm:
             sample_data_mssg = cm.read()
-    else:
+    except FileNotFoundError:
         print("File 'DataFiles/comp_mssg.txt' is missing or corrupt. Please reinstall the program.")
         exit()
 
 def fileMaker():
     global sample_data_mssg
     # Create File Path, if it doesn't exists
-    if Path.exists(comp_path):
-        pass
-    else:
-        checkPath(comp_path, True)
-    with open(comp_path,'w') as cp:
-        cp.writelines(sample_data_mssg)
+    try:
+        with open(comp_path,'w') as cp:
+            cp.writelines(sample_data_mssg)
+    except (FileNotFoundError, FileExistsError, Exception):
+        print('Something went wrong with `components.txt`')
 
 
 def createComponents_txt():
@@ -37,5 +38,3 @@ def createComponents_txt():
     # Creates `components.txt`
     fileMaker()
     print("'UserFiles/components.txt' created. Open it for furthur instructions.")
-
-    

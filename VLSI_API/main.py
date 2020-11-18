@@ -10,5 +10,3 @@ import os
 if __name__ == '__main__':
     createComponents_txt()
     MonitorComponentsChanges()
-    #createGateCodes()
-    pass

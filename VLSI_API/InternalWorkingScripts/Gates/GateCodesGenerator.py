@@ -1,9 +1,7 @@
-from pathlib import Path
+from InternalWorkingScripts.file_paths import filePath
 import json
-import time
 
 from Checkers.pathCheck import checkPath
-#import os #Remove later
 
 Gate_Codes = {
     'and' : ['a',1],
@@ -15,21 +13,13 @@ Gate_Codes = {
     'xnor': ['xn',1]
 }
 
-#gate_codes_file_path = Path(str(Path.cwd()) + '/VLSI_Python/InternalWorkingScripts/Gate_Codes.json')
-#os.remove(gate_codes_file_path) # Remove later
-
-gate_codes_file_path = Path(str(Path('.').absolute()) + '/DataFiles/gate_codes.json')
+gate_codes_file_path = filePath().gate_codes_path()
 
 def createGateCodes():
-    global gate_codes_file_path
-
-    if checkPath(gate_codes_file_path):
-        checkPath(gate_codes_file_path, create_dir=True)
-        print("done")
-        time.sleep(5)
+    global gate_codes_file_path, GateCodes
 
     try:
-        with open(gate_codes_file_path,'x') as gc:
+        with open(gate_codes_file_path,'w') as gc:
             json.dump(Gate_Codes,gc)
 
     except FileExistsError as e:

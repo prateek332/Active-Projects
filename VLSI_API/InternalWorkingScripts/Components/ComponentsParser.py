@@ -1,61 +1,16 @@
-import re
+import re, json
 from pathlib import Path
-from Checkers import pathCheck
+from Checkers import pathCheck, parsed_component_checker
 from InternalWorkingScripts.Components.ComponentsCreator import comp_path
 from InternalWorkingScripts.PopUpMessage import popUp
+from InternalWorkingScripts.file_paths import filePath
+from InternalWorkingScripts.NetList.NetListGenerator import generateNetlist
+from threading import Thread
 
 
-# Making a list of logic gates
-def logicGatesList():
-    logic_gates_path = Path(str(Path('.').absolute()) + '/DataFiles/DigitalComponents/logic_gates.txt')
-
-    logic_gates = None
-    if pathCheck.checkPath(logic_gates_path):
-        with open(logic_gates_path) as lg:
-            logic_gates = lg.read().split()  # List of logic gates
-    else:
-        print("'DataFiles/DigitalComponents/logic_gates.txt' does not exists. Please reinstall the program.")
-        #exit()
-    
-    return  logic_gates
-
-# Stores the parsed-components data
+# Stores the parsed-components data, later to be written in json file, stored in
+# Datafiles/parsed_components.json
 parsed_components_list = []
-
-def infoChecker(gate, inputs = '1', quantity = '1'):
-    '''Checks for invalid gates input from the user. Return `True` if all components are correct'''
-
-    logic_gates = logicGatesList()
-    if gate not in logic_gates:
-        popUp.popUp('Gate Name Error', f'{gate} - Does not exists')
-        print("Gate name: ", gate, " does not exits.")
-        return False
-        #exit()
-
-    if gate == 'not':
-        if inputs != '1':
-            popUp.popUp('Gate Input Info Error', 'Not gate inputs are invalid')
-            print("NOT gate inputs quantity are invalid.")
-            return False
-            #exit()
-        if quantity < '1':
-            popUp.popUp('Gate Quantity Info Error', 'Not gate quantity are invalid')
-            print("NOT gate quantity are invalid.")
-            return False
-            #exit()
-            
-    else:
-        if inputs < '1':
-            popUp.popUp('Gate Input Info Error', f'{gate}-inputs are invalid')
-            print("Wrong number of inputs for Gate:",gate)
-            return False
-            #exit()
-        if quantity < '1':
-            popUp.popUp('Gate Quantity Info Error', f'{gate}-quantity are invalid')
-            print("Invalid quantity for Gate:",gate)
-            return False
-            #exit()
-    return True
 
 
 def _componentsParser(gate_info):
@@ -67,50 +22,59 @@ def _componentsParser(gate_info):
     gate_inputs_quantity = re.compile(r'(-)?\d+(\s(-)?\d+)?')
 
     # Getting info
-    gate = gate_name.search(gate_info).group()
-    _x = gate_inputs_quantity.search(gate_info).group().split()
+    try:
+        gate = gate_name.search(gate_info).group()
+    except AttributeError:
+        gate = None
+    try:
+        _x = gate_inputs_quantity.search(gate_info).group().split()
+    except AttributeError:
+        _x = [None, None]
     # _x[0] = quantity, for NOT gate
     # _x[0] = no_of_inputs, _x[1] = quantity, for all other gates
 
-    if gate != "not":
-        return_check = infoChecker(gate, inputs = _x[0], quantity = _x[1])
-        parsed_components_list.append([gate,_x[0],_x[1]])
-        #NLG.netListCreator(gate,_x[0],_x[1])
-    else:
-        return_check = infoChecker(gate, quantity = _x[0])
-        parsed_components_list.append([gate,1,_x[0]])
-        #NLG.netListCreator(gate,quantity=_x[0])
+    return_check = parsed_component_checker.check_parsed_value(gate, _x)
+    if return_check is True:
+        if gate == 'not':
+            parsed_components_list.append([gate,_x[0]])
+        else:
+            parsed_components_list.append([gate,_x[0], _x[1]])
     return return_check
 
 def writeParsedComponents():
-    filepath = Path(str(Path('.').absolute()) + '/DataFiles/ParsedComponents/parsed_components.txt')
-
-    if pathCheck.checkPath(filepath):
-        pass
-    else:
-        pathCheck.checkPath(filepath,True)
+    '''Write the succesfully parsed components to `DataFiles/parsed_components.json`'''
+    filepath = filePath().parsed_comp_data_path()
     
     global parsed_components_list
-    with open(filepath, 'w') as wpc:
-        wpc.write(str(parsed_components_list))
 
+    with open(filepath, 'w') as wpc:
+        json.dump(parsed_components_list,wpc)
+    
 
 def parseComponents():
     '''Reads `components.txt` and parse it to create a components list, for NetListGenerator script. Returns `None`'''
-    global parsed_components_list
+    global parsed_components_list, comp_path
     parsed_components_list.clear()
-    filepath = comp_path # Path to components.txt
 
+    # Keeps track of valid compnents, and stops parsing when encounters
+    # an invalid compoenent entry
     comp_validity_check = True
-
-    with open(filepath) as cp:
+    with open(comp_path) as cp:
         for line in cp:
             if line == '\n' or line[0] == '#':
                 continue
             if comp_validity_check is True:
                 comp_validity_check = _componentsParser(line)
+            else:
+                break
+
+    # If all components are valid, then components are written to file
+    # for Net_List generation
     if comp_validity_check:
         writeParsedComponents()
         print("Components parsed")
+        generateNetlist()
+        popUp.popUp('Components Read Successfully', "Proceed to 'NetList.txt'")
+        
 
 
