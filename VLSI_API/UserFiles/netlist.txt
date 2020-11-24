@@ -1,41 +1,7 @@
-a1 a11 a12 a13 a1o
-a2 a21 a22 a23 a2o
-a3 a31 a32 a33 a3o
-a4 a41 a42 a43 a4o
+a1 a11 a12 a1o
+a2 a21 a22 a2o
 
-o1 o11 o12 o13 o14 o15 o1o
-o2 o21 o22 o23 o24 o25 o2o
-o3 o31 o32 o33 o34 o35 o3o
-o4 o41 o42 o43 o44 o45 o4o
-o5 o51 o52 o53 o54 o55 o5o
-o6 o61 o62 o63 o64 o65 o6o
+xo1 xo11 xo12 xo1o
 
-a5 a51 a52 a53 a5o
-a6 a61 a62 a63 a6o
-a7 a71 a72 a73 a7o
-a8 a81 a82 a83 a8o
-a9 a91 a92 a93 a9o
-
-n1 n11 n1o
-n2 n21 n2o
-n3 n31 n3o
-n4 n41 n4o
-n5 n51 n5o
-n6 n61 n6o
-n7 n71 n7o
-
-xo1 xo11 xo12 xo13 xo14 xo1o
-xo2 xo21 xo22 xo23 xo24 xo2o
-xo3 xo31 xo32 xo33 xo34 xo3o
-xo4 xo41 xo42 xo43 xo44 xo4o
-xo5 xo51 xo52 xo53 xo54 xo5o
-
-xn1 xn11 xn12 xn13 xn14 xn15 xn16 xn17 xn1o
-xn2 xn21 xn22 xn23 xn24 xn25 xn26 xn27 xn2o
-xn3 xn31 xn32 xn33 xn34 xn35 xn36 xn37 xn3o
-xn4 xn41 xn42 xn43 xn44 xn45 xn46 xn47 xn4o
-xn5 xn51 xn52 xn53 xn54 xn55 xn56 xn57 xn5o
-xn6 xn61 xn62 xn63 xn64 xn65 xn66 xn67 xn6o
-xn7 xn71 xn72 xn73 xn74 xn75 xn76 xn77 xn7o
-xn8 xn81 xn82 xn83 xn84 xn85 xn86 xn87 xn8o
+o1 o11 o12 o13 o1o
 

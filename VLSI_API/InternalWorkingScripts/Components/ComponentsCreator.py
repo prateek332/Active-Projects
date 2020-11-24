@@ -4,6 +4,7 @@ from pathlib import Path
 from Checkers.pathCheck import checkPath
 from concurrent.futures import ThreadPoolExecutor as pool
 from InternalWorkingScripts.file_paths import filePath
+from InternalWorkingScripts.PopUpMessage.popUp import popUp
 
 
 # Components.txt file path for creation, for user interactions
@@ -38,3 +39,5 @@ def createComponents_txt():
     # Creates `components.txt`
     fileMaker()
     print("'UserFiles/components.txt' created. Open it for furthur instructions.")
+    popUp("Components.txt Created","`Components.txt` is created in `/(Program_Dir)/UserFiles`. Open it for furthur instructions")
+

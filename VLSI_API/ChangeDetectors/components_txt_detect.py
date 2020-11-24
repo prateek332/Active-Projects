@@ -3,6 +3,7 @@ from concurrent.futures import ProcessPoolExecutor as pool
 from InternalWorkingScripts.Components.ComponentsCreator import fileMaker
 from InternalWorkingScripts.Components.ComponentsCreator import comp_path
 from InternalWorkingScripts.Components.ComponentsParser import parseComponents
+from InternalWorkingScripts.PopUpMessage.popUp import popUp
 
 # Path to components.txt
 filepath = comp_path
@@ -45,6 +46,7 @@ def MonitorComponentsChanges():
                 else:
                     # Creates file again, if new_length < original file_size
                     print('`components.txt` contents found wrong. Creating the file again.')
+                    popUp("`Components.txt` Created Again", "`Components.txt` file contents were found wrong. File created again.")
                     fileMaker()
         changed.add_done_callback(MonitorComponentsChanges)
         changed.cancel()
