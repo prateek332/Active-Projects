@@ -1,9 +1,9 @@
 import os, time
 from shutil import Error
 from pathlib import Path
-from Checkers.pathCheck import checkPath
+from Checkers import checkPath
 from concurrent.futures import ThreadPoolExecutor as pool
-from InternalWorkingScripts.file_paths import filePath
+from InternalWorkingScripts.FilesPath.file_paths import filePath
 from InternalWorkingScripts.PopUpMessage.popUp import popUp
 
 

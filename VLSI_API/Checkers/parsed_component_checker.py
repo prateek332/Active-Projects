@@ -1,4 +1,4 @@
-from InternalWorkingScripts.file_paths import filePath
+from InternalWorkingScripts.FilesPath.file_paths import filePath
 from InternalWorkingScripts.PopUpMessage import popUp
 
 def logicGatesList():

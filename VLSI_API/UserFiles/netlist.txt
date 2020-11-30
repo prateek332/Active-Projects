@@ -1,7 +1,0 @@
-a1 a11 a12 a1o
-a2 a21 a22 a2o
-
-xo1 xo11 xo12 xo1o
-
-o1 o11 o12 o13 o1o
-

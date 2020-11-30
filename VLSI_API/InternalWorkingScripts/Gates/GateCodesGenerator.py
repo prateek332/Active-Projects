@@ -1,7 +1,8 @@
-from InternalWorkingScripts.file_paths import filePath
+from InternalWorkingScripts.FilesPath.file_paths import filePath
+from Checkers import checkPath
+
 import json
 
-from Checkers.pathCheck import checkPath
 
 Gate_Codes = {
     'and' : ['a',1],

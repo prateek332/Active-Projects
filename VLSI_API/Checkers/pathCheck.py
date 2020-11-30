@@ -1,5 +1,4 @@
 from pathlib import Path
-from os import rmdir
 from shutil import rmtree
 
 def checkPath(filepath, create_dir = False):
@@ -8,12 +7,14 @@ def checkPath(filepath, create_dir = False):
     if type(filepath) is str:
         filepath = Path(filepath)
     if not create_dir:
-        print(filepath)
         if Path.exists(filepath):
             return True
         else:
             return False
     else:
-        if Path.exists(filepath):
+        try:
             rmtree(filepath)
-        Path.mkdir(filepath.parent)
+        except FileNotFoundError:
+            pass
+        except FileExistsError:
+            pass   

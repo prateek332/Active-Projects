@@ -1,16 +1,19 @@
+from Checkers import pathCheck, parsed_component_checker
+from InternalWorkingScripts.PopUpMessage import popUp
+from InternalWorkingScripts.FilesPath.file_paths import filePath
+from InternalWorkingScripts.NetList.NetListGenerator import createNetlist
+
 import re, json
 from pathlib import Path
-from Checkers import pathCheck, parsed_component_checker
-from InternalWorkingScripts.Components.ComponentsCreator import comp_path
-from InternalWorkingScripts.PopUpMessage import popUp
-from InternalWorkingScripts.file_paths import filePath
-from InternalWorkingScripts.NetList.NetListGenerator import generateNetlist
 from threading import Thread
 
 
 # Stores the parsed-components data, later to be written in json file, stored in
 # Datafiles/parsed_components.json
 parsed_components_list = []
+
+# path to `components.txt`
+comp_path = filePath().components_txt_path()
 
 
 def _componentsParser(gate_info):
@@ -73,7 +76,7 @@ def parseComponents():
     if comp_validity_check:
         writeParsedComponents()
         print("Components parsed")
-        generateNetlist()
+        createNetlist()
         popUp.popUp('Components Read Successfully', "Proceed to 'NetList.txt'")
         
 
