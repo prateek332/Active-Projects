@@ -1,7 +1,5 @@
 from InternalWorkingScripts import createComponents_txt
 from ChangeDetectors import MonitorComponentsChanges
-from InternalWorkingScripts import createGateCodes
-from InternalWorkingScripts import parse_all_nets
 from ChangeDetectors import MonitorNetlistChanges
 
 from concurrent.futures import ProcessPoolExecutor as pool

@@ -1,5 +1,6 @@
 from InternalWorkingScripts.Gates.GateCodesGenerator import createGateCodes
 from InternalWorkingScripts.FilesPath.file_paths import filePath
+from InternalWorkingScripts.Circuit_Simulation.all_nets import parse_all_nets
 
 from pathlib import Path
 import json
@@ -61,9 +62,12 @@ def _netListCreator(netlist_data):
         json.dump(Gate_Codes,gc)
 
 def createNetlist():
-    '''This is the main script function, to be called to create a `netlist.txt` file'''
+    '''This is this script's main function, to be called to create a `netlist.txt` file'''
     parsed_components_file_path = filePath().parsed_comp_data_path()
     with open(parsed_components_file_path) as pc:
         data = json.load(pc)
         print(data, type(data))
         _netListCreator(data)
+    
+    # parse all nets data to `/DataFiles/all_nets.json`
+    parse_all_nets()

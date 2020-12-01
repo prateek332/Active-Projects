@@ -47,7 +47,22 @@ class filePath:
         self._create_directory(path)
         return path
     
-    def all_nets(self):
+    def all_nets_path(self):
         path = Path(self.absolute_path + '/DataFiles/all_nets.json')
+        self._create_directory(path)
+        return path
+
+    def all_inputs_path(self):
+        path = Path(self.absolute_path + '/DataFiles/all_inputs.json')
+        self._create_directory(path)
+        return path
+
+    def all_outputs_path(self):
+        path = Path(self.absolute_path+ '/DataFiles/all_outputs.json')
+        self._create_directory(path)
+        return path
+
+    def all_components_path(self):
+        path = Path(self.absolute_path + '/DataFiles/all_connections.json')
         self._create_directory(path)
         return path
