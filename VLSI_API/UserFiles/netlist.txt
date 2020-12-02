@@ -1,17 +1,22 @@
-a1 a11 a12 a13 a1o
-a2 a21 a22 a23 a2o
-in a3 a31 a32 a33 a3o
-a4 a41 a42 a43 a4o
+in a1 a11 a12 a1o
+in a2 a21 a22 a2o
+in a3 a31 a32 a3o
+
+n1 n11 n1o a11
+n2 n21 n2o
+n3 n31 n3o a12
+n4 n41 n4o
 
 o1 o11 o12 o13 o14 o15 o1o
-o2 o21 o22 o23 o24 o25 o2o
-in o3 o31 o32 o33 o34 o35 o3o
-op o4 o41 o42 o43 o44 o45 o4o
-in o5 o51 o52 o53 o54 o55 o5o
+op o2 o21 o22 o23 o24 o25 o2o n11
+o3 o31 o32 o33 o34 o35 o3o n21
+o4 o41 o42 o43 o44 o45 o4o
+o5 o51 o52 o53 o54 o55 o5o n31
 o6 o61 o62 o63 o64 o65 o6o
 
-n1 n11 n1o
-n2 n21 n2o
+xo1 xo11 xo12 xo1o
+xo2 xo21 xo22 xo2o
+xo3 xo31 xo32 xo3o
 
 
         
@@ -20,8 +25,8 @@ n2 n21 n2o
 
         
 #outputs
-
+xo1o xo2o
 
         
 #connections
-
+xo11 xo12

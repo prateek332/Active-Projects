@@ -37,22 +37,23 @@ def parse_component_nets():
         for line in fp:
             if line.startswith('#'): # This is when we reach the `#inputs` section
                 break
-            if line == '\n':
+            if line in ('\n',""):
                 continue
 
             nets = line.split()
-            # checking if line has `in` or `op` at the beg
-            if nets[0] == 'in' or nets[0] == 'op':
-                nets = nets[1:]
-            #getting comp_name
-            comp_name = nets[0]
-            # Getting all outputs from the net string
-            output_nets = find_op_connections_nets(comp_name=comp_name,nets=line)
-            connection_nets = find_op_connections_nets(comp_name, nets, 1)
+            if len(nets) > 0:
+                # checking if line has `in` or `op` at the beg
+                if nets[0] in ('in','op'):
+                    nets = nets[1:]
+                #getting comp_name
+                comp_name = nets[0]
+                # Getting all outputs from the net string
+                output_nets = find_op_connections_nets(comp_name=comp_name,nets=line)
+                connection_nets = find_op_connections_nets(comp_name, nets, 1)
 
-            if len(connection_nets) > 0:
-                tmp_dict = dict(zip_longest(connection_nets, output_nets, fillvalue=output_nets[len(output_nets)-1]))
-                all_components.update(tmp_dict)
+                if len(connection_nets) > 0:
+                    tmp_dict = dict(zip_longest(connection_nets, output_nets, fillvalue=output_nets[len(output_nets)-1]))
+                    all_components.update(tmp_dict)
 
         # Now reading all the connections mentioned in`#connections` section
         # right now readline() is one line after `#inputs` line

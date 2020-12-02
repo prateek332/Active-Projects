@@ -7,3 +7,5 @@ from .PopUpMessage.popUp import popUp
 from .FilesPath.file_paths import filePath
 from .Circuit_Simulation.Simulate import simulate
 from .Circuit_Simulation.all_nets import parse_all_nets
+
+from .NetList._createEmptyNetlist import _createNetlist_txt

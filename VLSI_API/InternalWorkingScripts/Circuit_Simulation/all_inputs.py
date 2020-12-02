@@ -45,5 +45,5 @@ def parse_input_nets():
                 all_inputs[m] = "ND"
     
     # writing inputs to `/DataFiles/all_inputs.json`
-    create_json(all_inputs=all_inputs)
+    create_json(data=all_inputs)
         

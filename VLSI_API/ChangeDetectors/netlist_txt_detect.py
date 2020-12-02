@@ -18,16 +18,14 @@ def MonitorNetlistChanges():
     '''Continuously Monitor `netlist.txt` file for changes and take appropriate actions'''
 
     global filepath
-    if Path.exists(filePath):
-        while True:
-            changed = detect_change(filepath)
-            if changed:
-                print("Netlist Change Detected")
-                simulate()
-            else:
-                sleep(1)
-    else:
-        sleep(2)
-        MonitorNetlistChanges()
+    
+    while True:
+        print("Detecting")
+        changed = detect_change(filepath)
+        if changed:
+            print("Netlist Change Detected")
+            simulate()
+        else:
+            sleep(1)
 
 

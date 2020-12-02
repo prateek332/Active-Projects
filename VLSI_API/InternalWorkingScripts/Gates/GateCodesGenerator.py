@@ -1,5 +1,5 @@
 from InternalWorkingScripts.FilesPath.file_paths import filePath
-from Checkers import checkPath
+from Checkers.pathCheck import checkPath
 
 import json
 
